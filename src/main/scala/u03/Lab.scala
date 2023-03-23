@@ -50,9 +50,6 @@ object Lab extends App:
   // Task 3
   import Person.*
 
-  //  def coursesOf(list: List[Person]): List[String] =
-  //    maps(filters(list)(p => !isStudent(p)))(p => p match { case Teacher(_, c) => c} )
-
   def coursesOf(list: List[Person]): List[String] =
     flatMap(list)(_ match
       case Teacher(_, c) => Cons(c, Nil())

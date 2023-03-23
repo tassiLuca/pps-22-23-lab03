@@ -14,21 +14,20 @@ object Lab extends App:
   // Task 1.a
   @tailrec
   def drop[A](list: List[A], index: Int): List[A] = (list, index) match
-    case (Nil(), _) => Nil()
     case (l, 0) => l
     case (Cons(_, t), i) => drop(t, i - 1)
+    case _ => Nil()
 
   // Task 1.b
   def append[A](left: List[A], right: List[A]): List[A] = left match
-    case Nil() => right
-    case Cons(h, Nil()) => Cons(h, right)
     case Cons(h, t) => Cons(h, append(t, right))
+    case _ => right
 
   // Task 1.c
   def flatMap[A, B](list: List[A])(f: A => List[B]): List[B] = list match
-    case Nil() => Nil()
     case Cons(h, Nil()) => f(h)
     case Cons(h, t) => append(f(h), flatMap(t)(f))
+    case _ => Nil()
 
   // Task 1.d
   def maps[A, B](list: List[A])(f: A => B): List[B] = flatMap(list)(a => Cons(f(a), Nil()))
@@ -41,11 +40,11 @@ object Lab extends App:
 
   // Task 2
   def max(list: List[Int]): Option[Int] = list match
-    case Nil() => None()
     case Cons(h, Nil()) => Some(h)
     case Cons(h, t) => max(t) match
       case Some(x) if x > h => Some(x)
       case _ => Some(h)
+    case _ => None()
 
   // Task 3
   import Person.*
@@ -59,14 +58,13 @@ object Lab extends App:
   // Task 4
   @tailrec
   def foldLeft[A, B](list: List[A])(initial: B)(aggregator: (B, A) => B): B = list match
-    case Nil() => initial
     case Cons(h, t) => foldLeft(t)(aggregator(initial, h))(aggregator)
+    case _ => initial
 
   def foldRight[A, B](list: List[A])(initial: B)(aggregator: (A, B) => B): B =
     def reverse[E](list: List[E]): List[E] = list match
-      case Cons(_, Nil()) => list
       case Cons(h, t) => append(reverse(t), Cons(h, Nil()))
-      case _ => Nil()
+      case _ => list
     foldLeft(reverse(list))(initial)((b, a) => aggregator(a, b))
 
   // Task 7

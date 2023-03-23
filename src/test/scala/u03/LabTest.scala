@@ -20,7 +20,6 @@ class LabTest:
     assertEquals(Nil(), drop(list, 5))
     assertEquals(Nil(), drop(list, -1))
 
-
   @Test
   def testAppend(): Unit =
     assertEquals(Cons(10, Cons(20, Cons(30, Cons(40, Nil())))), append(list, Cons(40, Nil())))
@@ -48,6 +47,7 @@ class LabTest:
     assertEquals(Cons(10, Cons(20, Nil())), filters(list)(v => v < 30))
 
   import Option.*
+
   @Test
   def testMax(): Unit =
     assertEquals(Some(30), max(list))
@@ -77,14 +77,14 @@ class LabTest:
     assertEquals(Nil(), coursesOf(Nil()))
 
   @Test
-  def testStreamDrop(): Unit =
+  def testDropStream(): Unit =
     val s = Stream.take(Stream.iterate(0)(_ + 1))(10)
     assertEquals(Cons(6, Cons(7, Cons(8, Cons(9, Nil())))), Stream.toList(Stream.drop(s)(6)))
     assertEquals(Nil(), Stream.toList(Stream.drop(s)(10)))
     assertEquals(Nil(), Stream.toList(Stream.drop(Stream.empty())(6)))
 
   @Test
-  def testStreamConstant(): Unit =
+  def testConstantStream(): Unit =
     assertEquals(Cons("x", Cons("x", Cons("x", Nil()))), Stream.toList(Stream.take(Stream.constant("x"))(3)))
 
   @Test

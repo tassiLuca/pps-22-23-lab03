@@ -5,6 +5,7 @@ import org.junit.Test
 import u03.Lists.List
 import u02.Optionals.Option
 import u02.Modules.{Person, isStudent}
+import u03.Streams.*
 
 class LabTest:
   import List.*
@@ -40,7 +41,6 @@ class LabTest:
     assertEquals(Nil(), maps(Nil[Int]())(v => v * 3))
     assertEquals(Cons(1, Cons(2, Cons(3, Nil()))), maps(list)(v => v / 10))
 
-  import Person.*
   @Test
   def testFilter(): Unit =
     assertEquals(list, filters(list)(v => true))
@@ -62,11 +62,34 @@ class LabTest:
 
   @Test
   def testFoldRight(): Unit =
+    assertEquals(10, foldRight(Nil[Int]())(10)(_ - _))
     assertEquals(20, foldRight(list)(0)(_ - _))
     assertEquals(5, foldRight(list)(3)(_ / _))
     assertEquals("102030a", foldRight(list)("a")((v, i) => s"$v".concat(i) ))
+
+  import Person.*
 
   @Test
   def testCoursesOf(): Unit =
     val p = Cons(Teacher("Pianini", "oop"), Cons(Student("Tassinari", 2000), Cons(Teacher("Ricci", "pcd"), Nil())))
     assertEquals(Cons("oop", Cons("pcd", Nil())), coursesOf(p))
+    assertEquals(Nil(), coursesOf(Cons(Student("Pippo", 1990), Nil())))
+    assertEquals(Nil(), coursesOf(Nil()))
+
+  @Test
+  def testStreamDrop(): Unit =
+    val s = Stream.take(Stream.iterate(0)(_ + 1))(10)
+    assertEquals(Cons(6, Cons(7, Cons(8, Cons(9, Nil())))), Stream.toList(Stream.drop(s)(6)))
+    assertEquals(Nil(), Stream.toList(Stream.drop(s)(10)))
+    assertEquals(Nil(), Stream.toList(Stream.drop(Stream.empty())(6)))
+
+  @Test
+  def testStreamConstant(): Unit =
+    assertEquals(Cons("x", Cons("x", Cons("x", Nil()))), Stream.toList(Stream.take(Stream.constant("x"))(3)))
+
+  @Test
+  def testFibonacciSeries(): Unit =
+    assertEquals(
+      Cons(0, Cons(1, Cons(1, Cons(2, Cons(3, Cons(5, Cons(8, Cons(13, Nil())))))))),
+      Stream.toList(Stream.take(fibs)(8))
+    )

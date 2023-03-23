@@ -1,5 +1,7 @@
 package u03
 
+import scala.annotation.tailrec
+
 object Streams extends App :
 
   import Lists.*
@@ -26,8 +28,8 @@ object Streams extends App :
       case _ => Empty()
 
     def filter[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
-      case Cons(head, tail) if (pred(head())) => cons(head(), filter(tail())(pred))
-      case Cons(head, tail) => filter(tail())(pred)
+      case Cons(head, tail) if pred(head()) => cons(head(), filter(tail())(pred))
+      case Cons(_, tail) => filter(tail())(pred)
       case _ => Empty()
 
     def take[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
@@ -36,6 +38,15 @@ object Streams extends App :
 
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
+
+    // Task 3.1
+    @tailrec
+    def drop[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
+      case (Cons(_, tail), n) if n > 0 => drop(tail())(n - 1)
+      case _ => stream
+
+    // Task 3.2
+    def constant[A](element: A): Stream[A] = iterate(element)(_ => element)
 
   end Stream
 

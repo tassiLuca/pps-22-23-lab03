@@ -42,7 +42,7 @@ class LabTest:
 
   @Test
   def testFilter(): Unit =
-    assertEquals(list, filters(list)(v => true))
+    assertEquals(list, filters(list)(_ => true))
     assertEquals(Nil(), filters(list)(v => v > 30))
     assertEquals(Cons(10, Cons(20, Nil())), filters(list)(v => v < 30))
 

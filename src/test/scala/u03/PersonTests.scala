@@ -2,14 +2,14 @@ package u03
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import u03.Lists.List
 import u02.Optionals.Option
 import u02.Modules.{Person, isStudent}
+import u03.Lists.List
 import u03.Streams.*
+import Lab.*
+import List.*
 
-class LabTest:
-  import List.*
-  import Lab.*
+class ListTests:
 
   val list: List[Int] = Cons(10, Cons(20, Cons(30, Nil())))
 
@@ -65,8 +65,9 @@ class LabTest:
     assertEquals(10, foldRight(Nil[Int]())(10)(_ - _))
     assertEquals(20, foldRight(list)(0)(_ - _))
     assertEquals(5, foldRight(list)(3)(_ / _))
-    assertEquals("102030a", foldRight(list)("a")((v, i) => s"$v".concat(i) ))
+    assertEquals("102030a", foldRight(list)("a")((v, i) => s"$v".concat(i)))
 
+class PersonTests:
   import Person.*
 
   @Test
@@ -75,6 +76,9 @@ class LabTest:
     assertEquals(Cons("oop", Cons("pcd", Nil())), coursesOf(p))
     assertEquals(Nil(), coursesOf(Cons(Student("Pippo", 1990), Nil())))
     assertEquals(Nil(), coursesOf(Nil()))
+
+class StreamTests:
+  import Stream.*
 
   @Test
   def testDropStream(): Unit =
